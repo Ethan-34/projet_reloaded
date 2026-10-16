@@ -149,7 +149,7 @@ func fixQuotes(text string) string {
 		if r == '\'' {
 			before := i > 0 && isLetter(letters[i-1])
 			after := i+1 < len(letters) && isLetter(letters[i+1])
-			if !(before && after) { // ce n'est pas un apostrophe de mot
+			if !(before && after) {
 				if open {
 
 					for len(result) > 0 && result[len(result)-1] == ' ' {
