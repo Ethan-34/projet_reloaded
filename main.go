@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
-	"strings"
 )
 
 func main() {
@@ -24,7 +23,10 @@ func main() {
 		os.Exit(1)
 	}
 
-	for _, word := range strings.Fields(string(data)) {
-		fmt.Println(word)
-	}
+result := Process(string(data))
+err = os.WriteFile(os.Args[2], []byte(result), 0644)
+if err != nil {
+	fmt.Fprintln(os.Stderr, "Erreur :", err)
+	os.Exit(1)
+}
 }
