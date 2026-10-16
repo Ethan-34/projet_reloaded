@@ -1,34 +1,30 @@
-package main 
+package main
 
-import ( 
+import (
+	"errors"
 	"fmt"
-	"strings"
-	"strconv"
-	"unicode"
+	"io/fs"
 	"os"
-	"regexp"
+	"strings"
 )
 
-if len(os.Args) != 3 {
-fmt.Fprintln(os.Stderr, "usage: go run . <in> <out>")
-os.Exit(1)
-}
-input, output := os.Args[1], os.Args[2]
-
 func main() {
+	if len(os.Args) != 3 {
+		fmt.Fprintln(os.Stderr, "usage: go run . <in> <out>")
+		os.Exit(1)
+	}
 
 	data, err := os.ReadFile(os.Args[1])
 	if err != nil {
-		fmt.Println("Erreur :", err)
-		return
+		if errors.Is(err, fs.ErrNotExist) {
+			fmt.Fprintln(os.Stderr, "Erreur : fichier introuvable :", os.Args[1])
+		} else {
+			fmt.Fprintln(os.Stderr, "Erreur :", err)
+		}
+		os.Exit(1)
 	}
-	a := strings.Fields(string(data))
-	for _, word := range a {
+
+	for _, word := range strings.Fields(string(data)) {
 		fmt.Println(word)
 	}
-}
-
-_, err := os.ReadFile("nope.txt")
-fmt.Println(err)
-if errors.Is(err, fs.ErrNotExist) {
 }
